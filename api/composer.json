@@ -38,7 +38,8 @@
         "symfony/phpunit-bridge": "6.4.*",
         "symfony/stopwatch": "6.4.*",
         "symfony/var-dumper": "6.4.*",
-        "symfony/web-profiler-bundle": "6.4.*"
+        "symfony/web-profiler-bundle": "6.4.*",
+        "vimeo/psalm": "^5.17"
     },
     "config": {
         "optimize-autoloader": true,
@@ -53,7 +54,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
+            "App\\": "src/App"
         }
     },
     "autoload-dev": {
