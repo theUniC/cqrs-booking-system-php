@@ -17,3 +17,11 @@ The Booking struct contains
 And the Room struct contain only
 
 * room name
+
+## Todo list
+
+* [ ] Book a room use case
+  * [ ] Command to book a room
+  * [ ] Command handler to perform the booking
+  * [ ] Tests
+* [ ] Get the list of free rooms use case

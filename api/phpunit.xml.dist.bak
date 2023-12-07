@@ -22,20 +22,6 @@
         </testsuite>
     </testsuites>
 
-    <source>
-        <include>
-            <directory>src</directory>
-        </include>
-        <exclude>
-            <directory>vendor</directory>
-        </exclude>
-    </source>
-    <coverage>
-        <report>
-            <html outputDirectory="coverage/html" />
-        </report>
-    </coverage>
-
     <extensions>
     </extensions>
 </phpunit>
