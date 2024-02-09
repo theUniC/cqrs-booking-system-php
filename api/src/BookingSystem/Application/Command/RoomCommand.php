@@ -8,7 +8,8 @@ final readonly class RoomCommand
 {
     public function __construct(
         public string $roomId,
-        public string $roomName
+        public string $roomName,
+        public int $floor,
     ) {
     }
 }
