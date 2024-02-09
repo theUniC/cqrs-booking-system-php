@@ -7,7 +7,8 @@ namespace BookingSystem\Application\Command;
 final readonly class RoomCommand
 {
     public function __construct(
-        public string $roomId
+        public string $roomId,
+        public string $roomName
     ) {
     }
 }
