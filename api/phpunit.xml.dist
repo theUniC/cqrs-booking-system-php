@@ -30,7 +30,7 @@
             <directory>vendor</directory>
         </exclude>
     </source>
-    <coverage>
+    <coverage includeUncoveredFiles="true">
         <report>
             <html outputDirectory="coverage/html" />
         </report>

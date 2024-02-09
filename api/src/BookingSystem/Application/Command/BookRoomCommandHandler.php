@@ -10,6 +10,7 @@ use BookingSystem\DomainModel\InvalidClientIdProvided;
 use BookingSystem\DomainModel\InvalidRoomNameProvided;
 use BookingSystem\DomainModel\BookingRepository;
 use BookingSystem\DomainModel\RoomAlreadyBooked;
+use Ramsey\Uuid\Uuid;
 
 final readonly class BookRoomCommandHandler
 {
@@ -24,30 +25,34 @@ final readonly class BookRoomCommandHandler
         $this->assertRoomNameIsValid($command->roomName);
         $this->assertArrivalDateIsNotBeyondDepartureDate($command->arrivalDate, $command->departureDate);
         $this->assertRoomIsAvailableForGivenDates($command->roomName, $command->arrivalDate, $command->departureDate);
+
+        $id = Uuid::uuid4();
+        $booking = new Booking($id, $command->clientId, $command->roomName, $command->arrivalDate, $command->departureDate);
+        $this->bookingRepository->add($booking);
     }
 
-    public function assertClientIdIsValid(int $clientId): void
+    private function assertClientIdIsValid(int $clientId): void
     {
         if ($clientId <= 0) {
             throw new InvalidClientIdProvided();
         }
     }
 
-    public function assertRoomNameIsValid(string $roomName): void
+    private function assertRoomNameIsValid(string $roomName): void
     {
         if ('' === $roomName) {
             throw new InvalidRoomNameProvided();
         }
     }
 
-    public function assertArrivalDateIsNotBeyondDepartureDate(\DateTimeInterface $arrivalDate, \DateTimeInterface $departureDate): void
+    private function assertArrivalDateIsNotBeyondDepartureDate(\DateTimeInterface $arrivalDate, \DateTimeInterface $departureDate): void
     {
         if ($arrivalDate > $departureDate) {
             throw new InvalidArrivalDate();
         }
     }
 
-    public function assertRoomIsAvailableForGivenDates(
+    private function assertRoomIsAvailableForGivenDates(
         string $roomName,
         \DateTimeInterface $arrivalDate,
         \DateTimeInterface $departureDate

@@ -22,10 +22,10 @@ use Ramsey\Uuid\Uuid;
 
 final class BookRoomCommandHandlerTest extends TestCase
 {
-    private const VALID_ROOM_NAME       = '123';
-    private const INVALID_ROOM_NAME     = '';
+    private const VALID_ROOM_NAME = '123';
+    private const INVALID_ROOM_NAME = '';
 
-    private const VALID_CLIENT_ID       = 1;
+    private const VALID_CLIENT_ID = 1;
 
     private InMemoryBookingRepository $bookingRepository;
     private BookRoomCommandHandler $commandHandler;
@@ -103,7 +103,8 @@ final class BookRoomCommandHandlerTest extends TestCase
         \DateTimeInterface $existingDepartureDate,
         \DateTimeInterface $requestedArrivalDate,
         \DateTimeInterface $requestedDepartureDate
-    ): void {
+    ): void
+    {
         $this->expectException(RoomAlreadyBooked::class);
 
         $clientId = self::VALID_CLIENT_ID;
@@ -126,24 +127,24 @@ final class BookRoomCommandHandlerTest extends TestCase
     public static function bookingDates(): array
     {
         return [
-          [
-              Carbon::now()->addWeek(), // $existingArrivalDate
-              Carbon::now()->addWeeks(2), // $existingDepartureDate
-              Carbon::now()->addWeek(), // $requestedArrivalDate
-              Carbon::now()->addWeeks(2) // $requestedDepartureDate
-          ],
-          [
-              Carbon::now()->addWeek(), // $existingArrivalDate
-              Carbon::now()->addWeeks(2), // $existingDepartureDate
-              Carbon::now()->addWeek()->addDays(2), // $requestedArrivalDate
-              Carbon::now()->addWeeks(3) // $requestedDepartureDate
-          ],
-          [
-              Carbon::now()->addWeeks(), // $existingArrivalDate
-              Carbon::now()->addWeeks(2), // $existingDepartureDate
-              Carbon::now()->addDays(2), // $requestedArrivalDate
-              Carbon::now()->addWeek() // $requestedDepartureDate
-          ],
+            [
+                Carbon::now()->addWeek(), // $existingArrivalDate
+                Carbon::now()->addWeeks(2), // $existingDepartureDate
+                Carbon::now()->addWeek(), // $requestedArrivalDate
+                Carbon::now()->addWeeks(2) // $requestedDepartureDate
+            ],
+            [
+                Carbon::now()->addWeek(), // $existingArrivalDate
+                Carbon::now()->addWeeks(2), // $existingDepartureDate
+                Carbon::now()->addWeek()->addDays(2), // $requestedArrivalDate
+                Carbon::now()->addWeeks(3) // $requestedDepartureDate
+            ],
+            [
+                Carbon::now()->addWeeks(), // $existingArrivalDate
+                Carbon::now()->addWeeks(2), // $existingDepartureDate
+                Carbon::now()->addDays(2), // $requestedArrivalDate
+                Carbon::now()->addWeek() // $requestedDepartureDate
+            ],
         ];
     }
 
@@ -152,5 +153,20 @@ final class BookRoomCommandHandlerTest extends TestCase
         foreach (range(0, 10) as $invalidClientId) {
             yield [$invalidClientId * (-self::VALID_CLIENT_ID)];
         }
+    }
+
+    #[Test]
+    public function givenTheCorrectDataForABookingWhenItIsRequestedThenItShouldBeRegisteredSuccessfully(): void
+    {
+        ($this->commandHandler)(
+            new BookRoomCommand(
+                self::VALID_CLIENT_ID,
+                self::VALID_ROOM_NAME,
+                Carbon::now(),
+                Carbon::now()->addWeek()
+            )
+        );
+
+        $this->assertCount(1, $this->bookingRepository->all());
     }
 }
