@@ -10,6 +10,7 @@ final readonly class RoomCommand
         public string $roomId,
         public string $roomName,
         public int $floor,
+        public int $roomNumber
     ) {
     }
 }
